@@ -11,9 +11,9 @@ class detailViewController: UIViewController {
     
     var memo: Memo? // 이전 화면에서 전달받은 정보를 추가
     var token: NSObjectProtocol? // notification token 저장
-    
+            
     @IBOutlet weak var memoTableView: UITableView!
-    
+        
     @IBAction func Share(_ sender: Any) {
         guard let memo = memo?.content else { return }
         let vc = UIActivityViewController(activityItems: [memo], applicationActivities: nil)
@@ -21,14 +21,15 @@ class detailViewController: UIViewController {
     }
     
     @IBAction func deleteMemo(_ sender: Any) {
-        let alert = UIAlertController(title: "경고", message: "삭제하시겠습니까?", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "삭제", style: .destructive) {
+        // 지울 건지 경고 주기
+        let alert = UIAlertController(title: "", message: "삭제하시겠습니까?", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .destructive) {
             [weak self] (action) in
-            self?.navigationController?.popViewController(animated: true)
+            self?.navigationController?.popViewController(animated: true) // 버튼 누르면 삭제
         }
         
         alert.addAction(okAction)
-        let cancerAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancerAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil) // 취
         alert.addAction(cancerAction)
         
         present(alert, animated: true, completion: nil)
@@ -57,7 +58,7 @@ class detailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         token = NotificationCenter.default.addObserver(forName: composeViewController.MemoDidChange, object: nil, queue: OperationQueue.main, using: { [weak self] (noti) in self?.memoTableView.reloadData() // observer 추가
         })
     }
@@ -84,3 +85,4 @@ extension detailViewController: UITableViewDataSource {
         }
     }
 }
+
